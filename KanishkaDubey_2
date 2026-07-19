@@ -1,0 +1,103 @@
+import java.util.*;
+
+public class NumberGuessingGame {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        Random random = new Random();
+
+        boolean playAgain = true;
+        int round = 1;
+        ArrayList<String> history = new ArrayList<>();
+
+        while (playAgain) {
+
+            System.out.println("\n==============================");
+            System.out.println("   NUMBER GUESSING GAME");
+            System.out.println("==============================");
+
+            System.out.println("\nSelect Difficulty");
+            System.out.println("1. Easy");
+            System.out.println("2. Medium");
+            System.out.println("3. Hard");
+            System.out.print("Enter Choice : ");
+
+            int choice = sc.nextInt();
+
+            int maxRange;
+            int maxAttempts;
+
+            switch (choice) {
+                case 1:
+                    maxRange = 50;
+                    maxAttempts = 10;
+                    break;
+                case 2:
+                    maxRange = 100;
+                    maxAttempts = 7;
+                    break;
+                case 3:
+                    maxRange = 200;
+                    maxAttempts = 5;
+                    break;
+                default:
+                    System.out.println("Invalid Choice!");
+                    continue;
+            }
+
+            int secretNumber = random.nextInt(maxRange) + 1;
+
+            int attempts = 0;
+            boolean guessed = false;
+
+            System.out.println("\nGuess a number between 1 and " + maxRange);
+
+            while (attempts < maxAttempts) {
+
+                System.out.println("\nAttempt " + (attempts + 1) + "/" + maxAttempts);
+                System.out.print("Enter Guess : ");
+
+                int guess = sc.nextInt();
+
+                attempts++;
+
+                if (guess == secretNumber) {
+                    guessed = true;
+                    break;
+                } else if (guess > secretNumber) {
+                    System.out.println("Too High!");
+                } else {
+                    System.out.println("Too Low!");
+                }
+            }
+
+            if (guessed) {
+                System.out.println("\nCongratulations!");
+                System.out.println("You guessed the correct number: " + secretNumber);
+                System.out.println("Attempts Taken: " + attempts);
+
+                history.add("Round " + round + " - Guessed in " + attempts + " attempts");
+            } else {
+                System.out.println("\nYou Lost!");
+                System.out.println("The correct number was: " + secretNumber);
+
+                history.add("Round " + round + " - Lost");
+            }
+
+            System.out.print("\nPlay Again? (Y/N): ");
+            char ch = sc.next().charAt(0);
+
+            playAgain = (ch == 'Y' || ch == 'y');
+            round++;
+        }
+
+        System.out.println("\n========== GAME SUMMARY ==========");
+        for (String result : history) {
+            System.out.println(result);
+        }
+
+        System.out.println("\nThank you for playing!");
+        sc.close();
+    }
+}
